@@ -14,10 +14,10 @@
 int SERVO_PWR = 9;  //Toggle servo power
 int SERVO_DATA = 10; //Servo Data Signal (PWM)
 Servo myservo;
-int servo_pos = 0;  //Position where servo should go
 
 /* LED CONTROL */
 int LED_PWR = 11;  //LED power
+int led_status = 0;
 
 /* HT12D */
 int VT = 0;  //Verified Transmission (trigger on this)
@@ -44,5 +44,36 @@ void setup()
 
 void loop()
 {
-  
+  if(digitalRead(VT) == HIGH)
+  {
+    if(digitalRead(RAISE_DATA) == HIGH)
+      raise_targets();
+    if(digitalRead(LED_DATA) == HIGH)
+      toggle_leds();
+    delay(2000);  //Wait for VT to go low  
+  }
+}
+
+void raise_targets()
+{
+  digitalWrite(SERVO_PWR,HIGH);
+  delay(100);
+  myservo.write(150);
+  delay(800);
+  myservo.write(70);
+  digitalWrite(SERVO_PWR,LOW);
+}
+
+void toggle_leds()
+{
+  if(led_status == 0)
+  {
+    led_status = 1;
+    digitalWrite(LED_PWR, led_status);
+  }
+  else if(led_status == 1)
+  {
+    led_status = 0;
+    digitalWrite(LED_PWR, led_status);
+  }
 }
