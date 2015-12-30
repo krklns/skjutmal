@@ -61,6 +61,7 @@ void raise_targets()
   myservo.write(150);
   delay(800);
   myservo.write(70);
+  delay(500);
   digitalWrite(SERVO_PWR,LOW);
 }
 
